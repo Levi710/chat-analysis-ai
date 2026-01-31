@@ -15,6 +15,14 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="Chat Analysis AI")
 
+@app.get("/")
+def root():
+    return {
+        "message": "Chat Analysis AI backend is running",
+        "docs": "/docs"
+    }
+
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],   # OK for local dev
