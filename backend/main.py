@@ -12,6 +12,10 @@ from backend.reasoning.confidence import confidence_score
 from backend.llm.prompt_builder import build_analysis_prompt
 from backend.llm.client import call_llm
 from fastapi.middleware.cors import CORSMiddleware
+from backend.ocr.extract_boxes import extract_text_with_boxes
+from backend.conversation.structure_visual import structure_visual_conversation
+
+
 
 app = FastAPI(title="Chat Analysis AI")
 
@@ -48,15 +52,39 @@ async def analyze_chat(
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
-    # 2. Ingest raw text
-    raw_text = ingest_file(file_path)
+    # 2. Ingest raw text : # 3. Structure conversation
+    if file.filename.lower().endswith((".png", ".jpg", ".jpeg")):
+       blocks, image_size = extract_text_with_boxes(file_path)
+       conversation = structure_visual_conversation(blocks, image_size[0])
+       speaker_detection = "visual"
+    else:
+       raw_text = ingest_file(file_path)
+       conversation = structure_conversation(raw_text)
+       speaker_detection = "text"
+       
+    conversation_length = len(conversation)
 
-    # 3. Structure conversation
-    conversation = structure_conversation(raw_text)
 
     # 4. Feature extraction
     participation = message_counts(conversation)
     linguistics = linguistic_features(conversation)
+
+    a_count = participation.get("Person_A", {}).get("count", 0)
+    b_count = participation.get("Person_B", {}).get("count", 0)
+
+    if a_count == 0 or b_count == 0:
+        signal_strength = 1
+    else:
+        ratio = min(a_count, b_count) / max(a_count, b_count)
+        if ratio > 0.7:
+              signal_strength = 3
+        elif ratio > 0.4:
+              signal_strength = 2
+        else:
+              signal_strength = 1
+
+
+
 
     # 5. Reasoning
     engagement = engagement_balance(participation)
@@ -69,9 +97,13 @@ async def analyze_chat(
 
     # 6. Confidence
     confidence = confidence_score(
-        conversation_length=len(conversation),
-        signal_strength=2  # conservative default
+       conversation_length=conversation_length,
+       signal_strength=signal_strength,
+       speaker_detection=speaker_detection
     )
+    
+
+
 
     # 7. Build LLM prompt (not calling LLM yet)
     prompt = build_analysis_prompt(
