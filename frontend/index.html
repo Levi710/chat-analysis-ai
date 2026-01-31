@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Chat Analysis AI</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="container">
+    <h1>Chat Analysis AI</h1>
+    <p class="subtitle">Evidence-based conversational analysis</p>
+
+    <form id="analyzeForm">
+      <label>Upload chat file</label>
+      <input type="file" id="fileInput" required />
+
+      <label>Question</label>
+      <input
+        type="text"
+        id="questionInput"
+        placeholder="Is engagement balanced?"
+        required
+      />
+
+      <button type="submit">Analyze</button>
+    </form>
+
+    <div id="loading" class="hidden">Analyzing...</div>
+
+    <div id="result" class="hidden">
+      <h2>AI Explanation</h2>
+      <pre id="analysisText"></pre>
+
+      <h3>Confidence</h3>
+      <pre id="confidenceText"></pre>
+
+      <p class="disclaimer">
+        This analysis is based only on observable chat behavior.
+      </p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
