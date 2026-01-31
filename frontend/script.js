@@ -19,9 +19,9 @@ form.addEventListener("submit", async (e) => {
   result.classList.add("hidden");
   form.style.opacity = "0.5";
   form.style.pointerEvents = "none";
-
+  const API_URL = "https://ayushKishor-chat-analysis-ai.hf.space";
   try {
-    const response = await fetch("https://chat-analysis-ai.onrender.com/analyze", {
+    const response = await fetch(`${API_URL}/analyze`, {
       method: "POST",
       body: formData,
     });
