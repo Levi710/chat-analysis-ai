@@ -2,6 +2,80 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Reality Check</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="glow-bg"></div>
+
+  <div class="container">
+    <header>
+      <div class="badge">Beta Release</div>
+      <h1>Do you really think she cares?</h1>
+      <p class="subtitle">Stop overanalyzing. Let the AI find the truth in your receipts.</p>
+    </header>
+
+    <main>
+      <form id="analyzeForm" class="glass-card">
+        <div class="input-group">
+          <label for="fileInput">Upload the receipts (.txt)</label>
+          <div class="file-upload-wrapper">
+             <input type="file" id="fileInput" required />
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="questionInput">What's the overthinking today?</label>
+          <input
+            type="text"
+            id="questionInput"
+            placeholder="Is she dry-texting or just busy?"
+            required
+          />
+        </div>
+
+        <button type="submit" class="btn-primary">Analyze Vibe</button>
+      </form>
+
+      <div id="loading" class="hidden">
+        <div class="spinner"></div>
+        <p>Consulting the Council of Delusion...</p>
+      </div>
+
+      <div id="result" class="hidden glass-card">
+        <div class="result-header">
+          <span class="status-dot"></span>
+          <h2>The Verdict</h2>
+        </div>
+        
+        <div class="content-box">
+          <pre id="analysisText"></pre>
+        </div>
+
+        <div class="confidence-section">
+          <h3>Sincerity Score</h3>
+          <pre id="confidenceText"></pre>
+        </div>
+
+        <p class="disclaimer">
+          *Analysis based on cold, hard data. Emotional support not included.
+        </p>
+      </div>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
   <title>Chat Analysis AI</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -43,4 +117,4 @@
 
   <script src="script.js"></script>
 </body>
-</html>
+</html> -->
